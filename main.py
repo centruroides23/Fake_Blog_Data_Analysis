@@ -1,18 +1,26 @@
+import api
 from api import ApiData
+from validation import DataValidation
 from database import Database
 from reporting import Report
 
 if __name__ == "__main__":
 
-    # Extraction and Transformation layer
-
+    # Extraction layer
     api = ApiData()
-    print(api.USERS_JSON[0])
-    print(api.COMMENTS_JSON[0])
-    print(api.POSTS_JSON[0])
+
+    # Validation Layer
+    validation = DataValidation()
+    for record in api.USERS_JSON:
+        validation.perform_validation(data=record, schema="users")
+
+    for record in api.POSTS_JSON:
+        validation.perform_validation(data=record, schema="posts")
+
+    for record in api.COMMENTS_JSON:
+        validation.perform_validation(data=record, schema="comments")
 
     # Load and Query Layer
-
     db = Database('social_media.db')
     db.add_data(api.USERS_JSON, source="users")
     db.add_data(api.COMMENTS_JSON, source="comments")
@@ -21,7 +29,6 @@ if __name__ == "__main__":
     db.close()
 
     # Reporting Layer
-
     report = Report()
     report.generate_user_activity_report()
     report.generate_activity_statistics()

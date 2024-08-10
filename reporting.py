@@ -112,8 +112,15 @@ class Report:
         time_comments = pd.DataFrame(comments_data, columns=columns_comments)
 
         fig = go.Figure(data=[
-            go.Bar(name="Post Count", x=time_posts["time"], y=time_posts["post_count"]),
-            go.Bar(name="Comment Count", x=time_comments["time"], y=time_comments["comment_count"])
+            go.Bar(name="Post Count",
+                   x=time_posts["time"],
+                   y=time_posts["post_count"],
+                   marker_color='rgb(26, 118, 255)'),
+
+            go.Bar(name="Comment Count",
+                   x=time_comments["time"],
+                   y=time_comments["comment_count"],
+                   marker_color='rgb(55, 83, 109)')
         ])
 
         fig.update_layout(barmode="group",
